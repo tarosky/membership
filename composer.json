@@ -1,0 +1,25 @@
+{
+    "name": "tarosky/membership",
+    "description": "A theme framework for membership site for WooCommerce.",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "fumikito",
+            "email": "guy@hametuha.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6",
+        "hametuha/pattern": "^0.8.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Tarosky\\Membership": "app"
+        },
+        "files": [
+            "./membership.php"
+        ]
+    }
+}
