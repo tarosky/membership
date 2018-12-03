@@ -19,6 +19,7 @@ class Taxonomy extends AbstractController {
 		add_action( 'init', [ $this, 'register_taxonomy' ] );
 		add_action( 'admin_init', [ $this, 'register_default_term' ] );
 		add_action( 'save_post', [ $this, 'save_member_level' ], 10, 2 );
+		add_action( 'manage_product_posts_custom_column', [ $this, 'render_columns' ], 9, 2 );
 	}
 	
 	/**
@@ -33,7 +34,6 @@ class Taxonomy extends AbstractController {
 				'with_front' => false,
 			],
 			'meta_box_cb'       => [ self::class, 'taxonomy_callback' ],
-			'show_admin_column' => true,
 		] );
 	}
 	
@@ -123,5 +123,26 @@ class Taxonomy extends AbstractController {
 			<?php esc_html_e( 'You can set member level as number.', 'membership' ) ?>
 		</p>
 		<?php
+	}
+	
+	/**
+	 * Render post column.
+	 *
+	 * @param string $column
+	 * @param int    $post_id
+	 */
+	public function render_columns( $column, $post_id ) {
+		if ( 'name' !== $column ) {
+			return;
+		}
+		$terms = get_the_terms( $post_id, 'member-type' );
+		if ( ! $terms || is_wp_error( $terms ) ) {
+			return;
+		}
+		foreach ( $terms as $term ) {
+			?>
+			<span style="display:inline-block; padding: 2px 5px; font-size: 0.85em; background: #0073aa; color: #fff; margin-right: 5px; border-radius: 3px;"><?php echo esc_html( $term->name ) ?></span>
+			<?php
+		}
 	}
 }
